@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Spoetry</title>
+    
+    <style type="text/css">
+      div.mainbody
+      {
+      width:70%;
+      padding:10px;
+      border:5px solid gray;
+      margin:0px;
+      margin-left: auto;
+      margin-right: auto;      
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div class="mainbody">
+    <h1>Spoetry</h1>
+    <form method="post" action="/spoetry/">
+      <label for="id_text">Enter your poem to translate:</label>
+      <br/>
+      <textarea id="id_text" rows="10" cols="40" name="text"></textarea>
+      <br/>
+      <input type="submit" value="Submit" />
+    </form>
+    {% if text %}
+      <p>
+        <strong>Query:</strong></br>
+        <em>{{text}}</em>
+      </p>
+      <p>
+        <strong>Was split into:</strong><br/>
+        <br/>
+        <ul>
+        {% for result in results %}
+          <li><em>{{result.query}}</em> (attempts = {{result.numsearches}})</br>
+          <a href="{{result.track.trackhref}}">{{result.track.trackname}}</a>
+          from <a href="{{result.track.albumhref}}">{{result.track.albumname}}</a>
+          by <a href="{{result.track.artisthref}}">{{result.track.artistname}}</a>
+          </li>
+        {% endfor %}
+        </ul>        
+      </p>
+    {% endif %}
+    </div>   
+  </body>
+</html>
