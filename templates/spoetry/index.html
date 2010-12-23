@@ -23,13 +23,21 @@
       <br/>
       <textarea id="id_text" rows="10" cols="40" name="text"></textarea>
       <br/>
+      <label for="id_maxngram">Maximum ngram size:</label>
+      <br/>
+      <input type="text" name="maxngram" id="id_maxngram" value="4" />
+      <br/>
       <input type="submit" value="Submit" />
     </form>
+    
+    
     {% if text %}
       <p>
         <strong>Query:</strong></br>
         <em>{{text}}</em>
       </p>
+    {% endif %}
+    {% if results %}
       <p>
         <strong>Was split into:</strong><br/>
         <br/>

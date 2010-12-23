@@ -4,6 +4,9 @@ It search the spotify metadata api using phrases up to a maximum of 4 terms,
 decreasing the number of terms until it finds a match, repeatin with the remaining 
 terms to find the next track, until there are no more terms.
 
+Unfortunately there doesn't seem to be a documented way of querying over track title only,
+so many matches will partly match in the album or artist name.
+
 There is currently no caching at all. It should really store results in a local
 memcache (or on disks cache) with a 1 week timeout.
 
