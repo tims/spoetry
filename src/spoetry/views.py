@@ -3,8 +3,8 @@ from django import forms
 from lib import spotify
 
 class PoetryForm(forms.Form):
-    text = forms.CharField(max_length=300, widget=forms.Textarea)
-    maxngram = forms.IntegerField()
+    text = forms.CharField(widget=forms.Textarea, max_length=40)
+    maxngram = forms.IntegerField(label="Maximum ngram size", initial=4)
 
 def index(request):
     text = None
@@ -16,6 +16,7 @@ def index(request):
             text = form.cleaned_data['text']
             maxngram = form.cleaned_data['maxngram']
             form = PoetryForm()
+            
     else:
         form = PoetryForm() # An unbound form
     print "Hello world text is: " + str(text)
@@ -23,5 +24,5 @@ def index(request):
         results = spotify.searchForLargestNgrams(text.split(), maxngram)
 
     return render_to_response('spoetry/index.html', \
-       {'queries': queries, 'text': text, 'form': form, 'results': results})
+       {'queries': queries, 'text': text, 'form': form, 'results': results, 'errors':form.errors})
 

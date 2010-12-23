@@ -18,16 +18,17 @@
   <body>
     <div class="mainbody">
     <h1>Spoetry</h1>
+
     <form method="post" action="/spoetry/">
-      <label for="id_text">Enter your poem to translate:</label>
-      <br/>
-      <textarea id="id_text" rows="10" cols="40" name="text"></textarea>
-      <br/>
-      <label for="id_maxngram">Maximum ngram size:</label>
-      <br/>
-      <input type="text" name="maxngram" id="id_maxngram" value="4" />
-      <br/>
-      <input type="submit" value="Submit" />
+      Enter your poem to be spotified:<br/>
+      {{ form.text }}<br/>
+        {{form.errors.text}}
+
+      {{ form.maxngram.label }}:</br>
+      {{ form.maxngram }}
+      {{form.errors.maxngram}}
+      <br/>  
+      <input type="submit" value="Spotificate!" />
     </form>
     
     
