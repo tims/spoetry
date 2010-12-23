@@ -3,7 +3,7 @@ from django import forms
 from lib import spotify
 
 class PoetryForm(forms.Form):
-    text = forms.CharField(widget=forms.Textarea, max_length=40)
+    text = forms.CharField(widget=forms.Textarea, max_length=400)
     maxngram = forms.IntegerField(label="Maximum ngram size", initial=4)
 
 def index(request):
