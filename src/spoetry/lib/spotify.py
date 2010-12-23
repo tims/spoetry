@@ -1,24 +1,32 @@
 import urllib, urllib2
 import json
+from shove import Shove
+
+cache = Shove('file://spoetry.filecache') 
 
 def search(query):
+    cachekey = 'search:'+query
+    if query in cache:
+        return cache[cachekey]
+    
     items = {'q': query}
     url = 'http://ws.spotify.com/search/1/track.json'
     url = url + '?' + urllib.urlencode(items)
     request = urllib2.Request(url)
     response = urllib2.urlopen(request)
     tracks = json.load(response)['tracks']
+    trackresult = None
     if tracks:
         track = tracks[0]
-        return {"trackhref": track['href'], \
+        trackresult = {"trackhref": track['href'], \
                 "trackname": track['name'], \
                 "albumname": track['album']['name'], \
                 "albumhref": track['album']['href'], \
                 "artistname" : track['artists'][0]['name'], \
                 "artisthref" : track['artists'][0]['href']}
-    else:
-        return None
-
+    cache[cachekey] = trackresult
+    return trackresult
+    
 def searchForLargestNgrams(parts, maxN):
     if not parts:
         return []    
