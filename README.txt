@@ -1,6 +1,6 @@
 Spoetry attempts to auto generate spotify playlists from poetry.
 
-It search the spotify metadata api using phrases up to a maximum of 4 terms,
+It searches the spotify metadata api using phrases up to a maximum of 4 terms,
 decreasing the number of terms until it finds a match, repeatin with the remaining 
 terms to find the next track, until there are no more terms.
 
@@ -18,6 +18,7 @@ http://188.40.147.70:8000/spoetry/
 Requires:
   python 2.6
   django 1.2
+  Shove 0.2.1
   
 To start the server change to the src/spoetry directory and run:
   python manage.py runserver
