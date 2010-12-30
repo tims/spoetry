@@ -4,7 +4,7 @@ from lib import spotify
 
 class PoetryForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea, max_length=400)
-    maxngram = forms.IntegerField(label="Maximum ngram size", initial=4)
+    maxngram = forms.IntegerField(label="Maximum ngram size", initial=8)
 
 def index(request):
     text = None
@@ -21,7 +21,7 @@ def index(request):
         form = PoetryForm() # An unbound form
     print "Hello world text is: " + str(text)
     if text:
-        results = spotify.searchForLargestNgrams(text.split(), maxngram)
+        results = spotify.poemToPlaylist(text, maxngram)
 
     return render_to_response('spoetry/index.html', \
        {'queries': queries, 'text': text, 'form': form, 'results': results, 'errors':form.errors})
