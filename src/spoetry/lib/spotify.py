@@ -5,10 +5,6 @@ from shove import Shove
 cache = Shove('file://spoetry.filecache') 
 
 def search(query):
-    cachekey = 'search:2:' + query
-    if query in cache:
-        return cache[cachekey]
-    
     items = {'q': query}
     url = 'http://ws.spotify.com/search/1/track.json'
     url = url + '?' + urllib.urlencode(items)
@@ -26,7 +22,7 @@ def search(query):
             trackresult["artisthref"] = track['artists'][0].get('href')
             
         trackresults.append(trackresult)
-    cache[cachekey] = trackresults
+    
     return trackresults
     
 def poemToPlaylist(poem, maxNgram):
@@ -37,24 +33,45 @@ def poemToPlaylist(poem, maxNgram):
         results.append(searchForLargestNgrams(parts, maxNgram))
     return results
     
+  
 def searchForLargestNgrams(parts, maxN):
     if not parts:
         return []    
-    n = maxN
-    numsearches = 0
+    n = min(maxN, len(parts))
     while n > 0:
-        ngram = parts[:n]
-        query = " ".join(ngram)
-        query = query.lower().strip()
-        tracks = search('"' + query + '"');
-        numsearches = numsearches + 1
-        for track in tracks:
-            if track['trackname'].lower().strip() == query:
-                return [{"query":query, "track": track, 'numsearches': numsearches}] \
-                     + searchForLargestNgrams(parts[n:], maxN)
+        diff = len(parts) - n
+        if diff == 0:
+            result = searchExactNgram(parts)
+            if result:
+                return [result]
+        
+        for start in range(diff):
+            end = start + n
+            ngram = parts[start:end]
+            result = searchExactNgram(ngram)
+            if result:
+                return searchForLargestNgrams(parts[:start], maxN) + [result] + searchForLargestNgrams(parts[end:], maxN)
         n = n - 1
+            
     query = " ".join(parts).lower().strip()
-    return [{"query": query, "track": None, 'numsearches': numsearches}]
+    return [{"query": query, "track": None}]
+
+def searchExactNgram(ngram):
+    query = " ".join(ngram)
+    cachekey = 'searchExactNgram:1:' + query
+    result = cache.get(cachekey, None)
+    if result is not None:
+        return result
+    
+    query = query.lower().strip()
+    tracks = search('"' + query + '"')
+    result = None
+    for track in tracks:
+        if track['trackname'].lower().strip() == query:
+            result = {"query":query, "track": track}
+                
+    cache[cachekey] = result
+    return result
 
 # Useful for testing.
 if __name__ == '__main__':

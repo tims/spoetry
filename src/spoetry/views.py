@@ -24,5 +24,6 @@ def index(request):
         results = spotify.poemToPlaylist(text, maxngram)
 
     return render_to_response('spoetry/index.html', \
-       {'queries': queries, 'text': text, 'form': form, 'results': results, 'errors':form.errors})
+       {'queries': queries, 'text': text, 'form': form, \
+        'results': results, 'errors':form.errors})
 
