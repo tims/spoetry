@@ -19,7 +19,7 @@ def index(request):
             
     else:
         form = PoetryForm() # An unbound form
-    print "Hello world text is: " + str(text)
+    print "text is: " + str(text)
     if text:
         results = spotify.poemToPlaylist(text, maxngram)
 
