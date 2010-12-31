@@ -8,6 +8,7 @@ def search(query):
     items = {'q': query}
     url = 'http://ws.spotify.com/search/1/track.json'
     url = url + '?' + urllib.urlencode(items)
+    print "get http, " + url
     request = urllib2.Request(url)
     response = urllib2.urlopen(request)
     tracks = json.load(response)['tracks']
@@ -53,12 +54,14 @@ def searchForLargestNgrams(parts, maxN):
 
 def searchExactNgram(ngram):
     query = " ".join(ngram)
-    cachekey = 'searchExactNgram:1:' + query
-    result = cache.get(cachekey, None)
-    if result is not None:
-        return result
-    
     query = query.lower().strip()
+    
+    cachekey = 'searchExactNgram:1:' + query
+    if cachekey in cache:
+        print "get cache hit, " + cachekey
+        return cache[cachekey]
+    print "get cache miss, " + cachekey
+    
     tracks = search('"' + query + '"')
     result = None
     for track in tracks:
