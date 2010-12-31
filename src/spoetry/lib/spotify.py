@@ -44,13 +44,13 @@ def searchForLargestNgrams(parts, maxN):
             result = searchExactNgram(parts)
             if result:
                 return [result]
-        
-        for start in range(diff):
-            end = start + n
-            ngram = parts[start:end]
-            result = searchExactNgram(ngram)
-            if result:
-                return searchForLargestNgrams(parts[:start], maxN) + [result] + searchForLargestNgrams(parts[end:], maxN)
+        else:
+            for start in range(diff + 1):
+                end = start + n
+                ngram = parts[start:end]
+                result = searchExactNgram(ngram)
+                if result:
+                    return searchForLargestNgrams(parts[:start], maxN) + [result] + searchForLargestNgrams(parts[end:], maxN)
         n = n - 1
             
     query = " ".join(parts).lower().strip()
