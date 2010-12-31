@@ -36,23 +36,18 @@ def poemToPlaylist(poem, maxNgram):
   
 def searchForLargestNgrams(parts, maxN):
     if not parts:
-        return []    
+        return []
     n = min(maxN, len(parts))
     while n > 0:
         diff = len(parts) - n
-        if diff == 0:
-            result = searchExactNgram(parts)
+        for start in range(diff + 1):
+            end = start + n
+            ngram = parts[start:end]
+            result = searchExactNgram(ngram)
             if result:
-                return [result]
-        else:
-            for start in range(diff + 1):
-                end = start + n
-                ngram = parts[start:end]
-                result = searchExactNgram(ngram)
-                if result:
-                    return searchForLargestNgrams(parts[:start], maxN) + [result] + searchForLargestNgrams(parts[end:], maxN)
+                results = searchForLargestNgrams(parts[:start], maxN) + [result] + searchForLargestNgrams(parts[end:], maxN)
+                return results
         n = n - 1
-            
     query = " ".join(parts).lower().strip()
     return [{"query": query, "track": None}]
 
