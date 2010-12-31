@@ -45,7 +45,7 @@
         {% for line in results %}
           {% for result in line %}
             {% if result.track.trackname %}
-              <a href="{{result.track.trackhref}}">{{result.track.trackname}}</a>
+              <a href="{{result.track.trackhref}}" title="{{result.track.trackname}} by {{result.track.artistname}}">{{result.track.trackname}}</a>
             {% else %}
               {{result.query}}
             {% endif %}
